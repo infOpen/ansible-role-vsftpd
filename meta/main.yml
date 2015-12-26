@@ -1,0 +1,17 @@
+---
+
+galaxy_info:
+  author: Alexandre Chaussier
+  description: Ansible role to install VSFTPD package
+  company: Infopen (http://www.infopen.pro)
+  license: MIT
+  min_ansible_version: 1.9
+  platforms:
+    - name: ubuntu
+      versions:
+        - trusty
+  galaxy_tags:
+    - system
+    - web
+dependencies: []
+
