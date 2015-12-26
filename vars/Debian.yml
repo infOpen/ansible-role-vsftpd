@@ -1,0 +1,9 @@
+---
+
+vsftpd_packages:
+  - vsftpd
+
+vsftpd_package_state: present
+
+vsftpd_service_name: vsftpd
+

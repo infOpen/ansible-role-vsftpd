@@ -2,3 +2,16 @@
 
 # Main tasks file for vsftpd role
 
+- name: Load the OS specific varibles
+  include_vars: "{{ role_path }}/vars/{{ ansible_os_family }}.yml"
+  tags:
+    - install
+    - vsftpd
+
+- name: Install on Debian like os
+  include: install_debian.yml
+  tags:
+    - install
+    - vsftpd
+  when: ansible_os_family == "Debian"
+

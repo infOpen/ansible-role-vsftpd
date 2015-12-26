@@ -2,3 +2,12 @@
 
 # Defaults vars file for vsftpd role
 
+# Package variables
+#------------------
+vsftpd_package_state: present
+
+# Service variables
+#------------------
+vsftpd_service_state: started
+vsftpd_service_enabled: True
+

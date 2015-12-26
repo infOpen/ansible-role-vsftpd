@@ -9,6 +9,9 @@ describe 'vsftpd Ansible role' do
         expect(get_os_version()).to include('Ubuntu 14.04')
     end
 
+    describe package('vsftpd') do
+        it { should be_installed }
+    end
 
     # Functions
     #----------
