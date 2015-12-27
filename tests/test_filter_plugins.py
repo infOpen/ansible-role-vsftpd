@@ -1,12 +1,16 @@
 import pytest
 from ansible import errors
 from filter_plugins.vsftpd_boolean_render import vsftpd_boolean_render
+from filter_plugins.vsftpd_numeric_validate import vsftpd_numeric_validate
 
 
 #==============================================================================
 # Tests
 #==============================================================================
 
+#
+# Tests about vsftpd_boolean_render
+#
 @pytest.mark.parametrize('arg', [
     ('yes'),
     ('YES'),
@@ -18,6 +22,7 @@ from filter_plugins.vsftpd_boolean_render import vsftpd_boolean_render
 ])
 def test_true_vsftpd_boolean_render(arg):
     assert vsftpd_boolean_render(arg) == 'YES'
+
 
 @pytest.mark.parametrize('arg', [
     ('no'),
@@ -31,6 +36,7 @@ def test_true_vsftpd_boolean_render(arg):
 def test_false_vsftpd_boolean_render(arg):
     assert vsftpd_boolean_render(arg) == 'NO'
 
+
 @pytest.mark.parametrize('arg', [
     (),
     ([]),
@@ -43,6 +49,7 @@ def test_bad_type_vsftpd_boolean_render(arg):
 
     assert 'Invalid value type' in str(errorInfo.value)
 
+
 @pytest.mark.parametrize('arg', [
     ('foo'),
     (''),
@@ -51,6 +58,43 @@ def test_bad_type_vsftpd_boolean_render(arg):
 def test_bad_string_vsftpd_boolean_render(arg):
     with pytest.raises(errors.AnsibleFilterError) as errorInfo:
         vsftpd_boolean_render(arg)
+
+    assert 'Invalid value: ' in str(errorInfo.value)
+
+
+#
+# Tests about vsftpd_numeric_validate
+#
+@pytest.mark.parametrize('arg', [
+    ('10'),
+    ('   10 '),
+    ('10 '),
+    (' 10'),
+    (10)
+])
+def test_valid_vsftpd_numeric_validate(arg):
+    assert vsftpd_numeric_validate(arg) == 10
+
+
+@pytest.mark.parametrize('arg', [
+    (),
+    ([]),
+    ({})
+])
+def test_bad_type_vsftpd_numeric_validate(arg):
+    with pytest.raises(errors.AnsibleFilterError) as errorInfo:
+        vsftpd_numeric_validate(arg)
+
+    assert 'Invalid value type' in str(errorInfo.value)
+
+
+@pytest.mark.parametrize('arg', [
+    (''),
+    ('foo')
+])
+def test_bad_value_vsftpd_numeric_validate(arg):
+    with pytest.raises(errors.AnsibleFilterError) as errorInfo:
+        vsftpd_numeric_validate(arg)
 
     assert 'Invalid value: ' in str(errorInfo.value)
 
