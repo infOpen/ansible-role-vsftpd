@@ -30,9 +30,6 @@ install:
   - "cp ./tests/ansible.cfg ./"
 
 script:
-  # Add debug
-  - env
-
   # Check the role/playbook's syntax.
   - ansible-playbook -i tests/inventory tests/test_travis.yml --syntax-check
 
