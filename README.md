@@ -40,6 +40,18 @@ This role contains two tests methods :
 
 None
 
+## Embed filter plugins
+
+### vsftpd_boolean_render(arg)
+
+This embed jinja filter used to set boolean values following VSFTPD rules :
+  - YES for true values
+  - NO for false values
+
+Usage :
+
+    {{ my_string | vsftpd_boolean_render() }}
+
 ## Example Playbook
 
     - hosts: servers

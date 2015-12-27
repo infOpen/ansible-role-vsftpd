@@ -6,6 +6,15 @@ from ansible import errors
 #
 
 def vsftpd_boolean_render(arg):
+    """
+        Convert boolean value from boolean or string type to VSFTPD format
+
+        :param arg: the brute value to be translated
+        :type arg: str
+        :type arg: bool
+        :return: The translated value
+        :rtype: str
+    """
 
     TRUE_CHOICES = [ 'true', 'yes' ]
     FALSE_CHOICES = [ 'false', 'no' ]
