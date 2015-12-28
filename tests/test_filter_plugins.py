@@ -1,7 +1,8 @@
 import pytest
 from ansible import errors
 from filter_plugins.vsftpd_boolean_render import vsftpd_boolean_render
-from filter_plugins.vsftpd_numeric_validate import vsftpd_numeric_validate
+from filter_plugins.vsftpd_positive_integer_validate \
+    import vsftpd_positive_integer_validate
 
 
 #==============================================================================
@@ -73,7 +74,7 @@ def test_bad_string_vsftpd_boolean_render(arg):
     (10)
 ])
 def test_valid_vsftpd_numeric_validate(arg):
-    assert vsftpd_numeric_validate(arg) == 10
+    assert vsftpd_positive_integer_validate(arg) == 10
 
 
 @pytest.mark.parametrize('arg', [
@@ -83,7 +84,7 @@ def test_valid_vsftpd_numeric_validate(arg):
 ])
 def test_bad_type_vsftpd_numeric_validate(arg):
     with pytest.raises(errors.AnsibleFilterError) as errorInfo:
-        vsftpd_numeric_validate(arg)
+        vsftpd_positive_integer_validate(arg)
 
     assert 'Invalid value type' in str(errorInfo.value)
 
@@ -94,7 +95,7 @@ def test_bad_type_vsftpd_numeric_validate(arg):
 ])
 def test_bad_value_vsftpd_numeric_validate(arg):
     with pytest.raises(errors.AnsibleFilterError) as errorInfo:
-        vsftpd_numeric_validate(arg)
+        vsftpd_positive_integer_validate(arg)
 
     assert 'Invalid value: ' in str(errorInfo.value)
 

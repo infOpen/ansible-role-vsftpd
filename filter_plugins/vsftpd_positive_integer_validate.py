@@ -3,12 +3,12 @@ from ansible import errors
 
 
 #
-# Additionnal Jinja2 filter to validate numeric values with vsftpd rules
+# Additionnal Jinja2 filter to validate positive_integer values
 #
 
-def vsftpd_numeric_validate(arg):
+def vsftpd_positive_integer_validate(arg):
     """
-        Validate numeric value from integer or string type to VSFTPD format
+        Validate positive integer value from integer or string type
 
         :param arg: the brute value to be translated
         :type arg: str
@@ -41,7 +41,7 @@ class FilterModule(object):
     """ Filters to manage vsftpd configuration with numeric values"""
 
     filter_map = {
-        'vsftpd_numeric_validate': vsftpd_numeric_validate
+        'vsftpd_positive_integer_validate': vsftpd_positive_integer_validate
     }
     def filters(self):
         return self.filter_map
