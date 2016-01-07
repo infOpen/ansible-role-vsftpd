@@ -8,4 +8,9 @@
     - "infOpen/ansible-role-vsftpd"
   post_tasks:
     - include: ./test_common.yml
+  vars:
+    vsftpd_banned_email_file: '/tmp/foo/vsftpd.banned_emails'
+    vsftpd_chroot_list_file: '/tmp/foo/vsftpd.chroot_list'
+    vsftpd_email_password_file: '/tmp/foo/vsftpd.email_password'
+    vsftpd_userlist_file: '/tmp/foo/vsftpd.userlist_file'
 
