@@ -23,6 +23,25 @@ vsftpd_config_file_mode: '0644'
 vsftpd_config_file_owner: root
 vsftpd_config_file_group: root
 
+# Additional config files
+#------------------------
+vsftpd_additional_directories_group: root
+vsftpd_additional_directories_owner: root
+vsftpd_additional_directories_mode: '0755'
+vsftpd_additional_files_group: root
+vsftpd_additional_files_owner: root
+vsftpd_additional_files_mode: '0755'
+vsftpd_ca_certs_file_content: ''
+vsftpd_dsa_cert_file_content: ''
+vsftpd_dsa_private_key_file_content: ''
+vsftpd_rsa_cert_file_content: ''
+vsftpd_rsa_private_key_file_content: ''
+vsftpd_banned_email_file_content: ''
+vsftpd_banner_file_content: ''
+vsftpd_chroot_list_file_content: ''
+vsftpd_email_password_file_content: ''
+vsftpd_userlist_file_content: ''
+
 # Default values
 #---------------
 
@@ -166,10 +185,4 @@ vsftpd_secure_email_list_enable: False
 vsftpd_userlist_deny: True
 vsftpd_userlist_enable: False
 vsftpd_userlist_file: '/etc/vsftpd.user_list'
-
-
-
-
-
-# Positive integer
 
