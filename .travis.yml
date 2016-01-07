@@ -12,6 +12,9 @@ language: ruby
 rvm:
   - 2.1.5
 
+env:
+  - ANSIBLE_ROLES_PATH=${TRAVIS_BUILD_DIR%/*/*}
+
 before_install:
   # Make sure everything's up to date.
   - sudo apt-get update -qq
@@ -20,8 +23,15 @@ install:
   # Install ruby dependencies to run serverspec tests
   - bundle install
 
-  # Install Ansible.
-  - pip install ansible
+  # Install Ansible from devel, waiting 2.0 release and pytest.
+  - sudo pip install paramiko PyYAML Jinja2 httplib2 six pytest
+  - git clone https://github.com/ansible/ansible.git ansible_clone
+  - cd ansible_clone
+      && git checkout v2.0.0-0.8.rc3
+      && git submodule init
+      && git submodule update
+      && sudo make install
+      && cd ..
 
   # Add ansible.cfg to pick up roles path.
   - "cp ./tests/ansible.cfg ./"
@@ -29,6 +39,9 @@ install:
 script:
   # Check the role/playbook's syntax.
   - ansible-playbook -i tests/inventory tests/test_travis.yml --syntax-check
+
+  # Run filter plugins tests
+  - py.test -v
 
   # Run the role/playbook with ansible-playbook.
   - ansible-playbook -i tests/inventory tests/test_travis.yml --connection=local --sudo

@@ -6,7 +6,7 @@ Install vsftpd package.
 
 ## Requirements
 
-This role requires Ansible 1.9 or higher,
+This role requires Ansible 2.0 or higher,
 and platform requirements are listed in the metadata file.
 
 ## Testing
@@ -39,6 +39,18 @@ This role contains two tests methods :
 ## Dependencies
 
 None
+
+## Embed filter plugins
+
+### vsftpd_boolean_render(arg)
+
+This embed jinja filter used to set boolean values following VSFTPD rules :
+  - YES for true values
+  - NO for false values
+
+Usage :
+
+    {{ my_string | vsftpd_boolean_render() }}
 
 ## Example Playbook
 

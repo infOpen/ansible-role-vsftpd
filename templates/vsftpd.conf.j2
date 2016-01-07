@@ -1,0 +1,153 @@
+# {{ ansible_managed }}
+
+# LISTEN
+#-------
+listen={{ vsftpd_listen | vsftpd_boolean_render() }}
+listen_address={{ vsftpd_listen_address }}
+listen_address6={{ vsftpd_listen_address6 }}
+listen_ipv6={{ vsftpd_listen_ipv6 | vsftpd_boolean_render() }}
+one_process_model={{ vsftpd_one_process_model | vsftpd_boolean_render() }}
+run_as_launching_user={{ vsftpd_run_as_launching_user | vsftpd_boolean_render() }}
+
+# SSL
+#----
+ssl_enable={{ vsftpd_ssl_enable | vsftpd_boolean_render() }}
+{% if vsftpd_ssl_enable %}
+ssl_sslv2={{ vsftpd_ssl_sslv2 | vsftpd_boolean_render() }}
+ssl_sslv3={{ vsftpd_ssl_sslv3 | vsftpd_boolean_render() }}
+ssl_tlsv1={{ vsftpd_ssl_tlsv1 | vsftpd_boolean_render() }}
+{% endif %}
+allow_anon_ssl={{ vsftpd_allow_anon_ssl | vsftpd_boolean_render() }}
+ca_certs_file={{ vsftpd_ca_certs_file }}
+debug_ssl={{ vsftpd_debug_ssl | vsftpd_boolean_render() }}
+dsa_cert_file={{ vsftpd_dsa_cert_file }}
+dsa_private_key_file={{ vsftpd_dsa_private_key_file }}
+force_anon_data_ssl={{ vsftpd_force_anon_data_ssl | vsftpd_boolean_render() }}
+force_anon_logins_ssl={{ vsftpd_force_anon_logins_ssl | vsftpd_boolean_render() }}
+force_local_data_ssl={{ vsftpd_force_local_data_ssl | vsftpd_boolean_render() }}
+force_local_logins_ssl={{ vsftpd_force_local_logins_ssl | vsftpd_boolean_render() }}
+implicit_ssl={{ vsftpd_implicit_ssl | vsftpd_boolean_render() }}
+require_cert={{ vsftpd_require_cert | vsftpd_boolean_render() }}
+require_ssl_reuse={{ vsftpd_require_ssl_reuse | vsftpd_boolean_render() }}
+rsa_cert_file={{ vsftpd_rsa_cert_file }}
+rsa_private_key_file={{ vsftpd_rsa_private_key_file }}
+ssl_ciphers={{vsftpd_ssl_ciphers }}
+ssl_request_cert={{ vsftpd_ssl_request_cert | vsftpd_boolean_render() }}
+strict_ssl_read_eof={{ vsftpd_strict_ssl_read_eof | vsftpd_boolean_render() }}
+strict_ssl_write_shutdown={{ vsftpd_strict_ssl_write_shutdown | vsftpd_boolean_render() }}
+validate_cert={{ vsftpd_validate_cert | vsftpd_boolean_render() }}
+
+# ACCESS RULES
+#-------------
+
+# Anonymous management
+anonymous_enable={{ vsftpd_anonymous_enable | vsftpd_boolean_render() }}
+anon_max_rate={{ vsftpd_anon_max_rate | vsftpd_positive_integer_validate() }}
+anon_umask={{ vsftpd_anon_umask | vsftpd_octal_mode_validate() }}
+anon_mkdir_write_enable={{ vsftpd_anon_mkdir_write_enable | vsftpd_boolean_render() }}
+anon_other_write_enable={{ vsftpd_anon_other_write_enable | vsftpd_boolean_render() }}
+anon_root={{ vsftpd_anon_root }}
+anon_upload_enable={{ vsftpd_anon_upload_enable | vsftpd_boolean_render() }}
+anon_world_readable_only={{ vsftpd_anon_world_readable_only | vsftpd_boolean_render() }}
+guest_enable={{ vsftpd_guest_enable | vsftpd_boolean_render() }}
+no_anon_password={{ vsftpd_no_anon_password | vsftpd_boolean_render() }}
+
+# Transfert and rigths management
+accept_timeout={{ vsftpd_accept_timeout | vsftpd_positive_integer_validate() }}
+ascii_download_enable={{ vsftpd_ascii_download_enable | vsftpd_boolean_render() }}
+ascii_upload_enable={{ vsftpd_ascii_upload_enable | vsftpd_boolean_render() }}
+async_abor_enable={{ vsftpd_async_abor_enable | vsftpd_boolean_render() }}
+check_shell={{ vsftpd_check_shell | vsftpd_boolean_render() }}
+chmod_enable={{ vsftpd_chmod_enable | vsftpd_boolean_render() }}
+chown_upload_mode={{ vsftpd_chown_upload_mode | vsftpd_octal_mode_validate() }}
+chown_uploads={{ vsftpd_chown_uploads | vsftpd_boolean_render() }}
+chown_username={{ vsftpd_chown_username }}
+chroot_list_enable={{ vsftpd_chroot_list_enable | vsftpd_boolean_render() }}
+chroot_local_user={{ vsftpd_chroot_local_user | vsftpd_boolean_render() }}
+cmds_allowed={{ vsftpd_cmds_allowed | join(',') }}
+cmds_denied={{ vsftpd_cmds_denied | join(',') }}
+connect_from_port_20={{ vsftpd_connect_from_port_20 | vsftpd_boolean_render() }}
+connect_timeout={{ vsftpd_connect_timeout | vsftpd_positive_integer_validate() }}
+data_connection_timeout={{ vsftpd_data_connection_timeout | vsftpd_positive_integer_validate() }}
+delay_failed_login={{ vsftpd_delay_failed_login | vsftpd_positive_integer_validate() }}
+delay_successful_login={{ vsftpd_delay_successful_login | vsftpd_positive_integer_validate() }}
+deny_file={{ vsftpd_deny_file }}
+download_enable={{ vsftpd_download_enable | vsftpd_boolean_render() }}
+dirlist_enable={{ vsftpd_dirlist_enable | vsftpd_boolean_render() }}
+dirmessage_enable={{ vsftpd_dirmessage_enable | vsftpd_boolean_render() }}
+file_open_mode={{ vsftpd_file_open_mode | vsftpd_octal_mode_validate() }}
+ftp_data_port={{ vsftpd_ftp_data_port | vsftpd_positive_integer_validate() }}
+ftp_username={{ vsftpd_ftp_username }}
+guest_username={{ vsftpd_guest_username }}
+hide_file={{ vsftpd_hide_file }}
+idle_session_timeout={{ vsftpd_idle_session_timeout | vsftpd_positive_integer_validate() }}
+listen_port={{ vsftpd_listen_port | vsftpd_positive_integer_validate() }}
+local_enable={{ vsftpd_local_enable | vsftpd_boolean_render() }}
+local_max_rate={{ vsftpd_local_max_rate | vsftpd_positive_integer_validate() }}
+local_root={{ vsftpd_local_root }}
+local_umask={{ vsftpd_local_umask | vsftpd_octal_mode_validate() }}
+lock_upload_files={{ vsftpd_lock_upload_files | vsftpd_boolean_render() }}
+ls_recurse_enable={{ vsftpd_ls_recurse_enable | vsftpd_boolean_render() }}
+max_clients={{ vsftpd_max_clients | vsftpd_positive_integer_validate() }}
+max_login_fails={{ vsftpd_max_login_fails | vsftpd_positive_integer_validate() }}
+max_per_ip={{ vsftpd_max_per_ip | vsftpd_positive_integer_validate() }}
+nopriv_user={{ vsftpd_nopriv_user }}
+pam_service_name={{ vsftpd_pam_service_name }}
+passwd_chroot_enable={{ vsftpd_passwd_chroot_enable | vsftpd_boolean_render() }}
+port_enable={{ vsftpd_port_enable | vsftpd_boolean_render() }}
+port_promiscuous={{ vsftpd_port_promiscuous | vsftpd_boolean_render() }}
+secure_chroot_dir={{ vsftpd_secure_chroot_dir }}
+tilde_user_enable={{ vsftpd_tilde_user_enable | vsftpd_boolean_render() }}
+trans_chunk_size={{ vsftpd_trans_chunk_size | vsftpd_positive_integer_validate() }}
+use_localtime={{ vsftpd_use_localtime | vsftpd_boolean_render() }}
+use_sendfile={{ vsftpd_use_sendfile | vsftpd_boolean_render() }}
+user_config_dir={{ vsftpd_user_config_dir }}
+user_sub_token={{ vsftpd_user_sub_token }}
+write_enable={{ vsftpd_write_enable | vsftpd_boolean_render() }}
+
+# Misc
+background={{ vsftpd_background | vsftpd_boolean_render() }}
+banned_email_file={{ vsftpd_banned_email_file }}
+banner_file={{ vsftpd_banner_file }}
+delete_failed_uploads={{ vsftpd_delete_failed_uploads | vsftpd_boolean_render() }}
+force_dot_files={{ vsftpd_force_dot_files | vsftpd_boolean_render() }}
+ftpd_banner={{ vsftpd_ftpd_banner }}
+hide_ids={{ vsftpd_hide_ids | vsftpd_boolean_render() }}
+mdtm_write={{ vsftpd_mdtm_write | vsftpd_boolean_render() }}
+message_file={{ vsftpd_message_file }}
+session_support={{ vsftpd_session_support | vsftpd_boolean_render() }}
+setproctitle_enable={{ vsftpd_setproctitle_enable | vsftpd_boolean_render() }}
+tcp_wrappers={{ vsftpd_tcp_wrappers | vsftpd_boolean_render() }}
+text_userdb_names={{ vsftpd_text_userdb_names | vsftpd_boolean_render() }}
+virtual_use_local_privs={{ vsftpd_virtual_use_local_privs | vsftpd_boolean_render() }}
+
+# Logging
+dual_log_enable={{ vsftpd_dual_log_enable | vsftpd_boolean_render() }}
+log_ftp_protocol={{ vsftpd_log_ftp_protocol | vsftpd_boolean_render() }}
+no_log_lock={{ vsftpd_no_log_lock | vsftpd_boolean_render() }}
+syslog_enable={{ vsftpd_syslog_enable | vsftpd_boolean_render() }}
+vsftpd_log_file={{ vsftpd_vsftpd_log_file }}
+xferlog_enable={{ vsftpd_xferlog_enable | vsftpd_boolean_render() }}
+xferlog_file={{ vsftpd_xferlog_file }}
+xferlog_std_format={{ vsftpd_xferlog_std_format | vsftpd_boolean_render() }}
+
+
+# Passive mode options
+{% if vsftpd_pasv_address %}
+pasv_address={{ vsftpd_pasv_address }}
+{% endif %}
+pasv_addr_resolve={{ vsftpd_pasv_addr_resolve | vsftpd_boolean_render() }}
+pasv_enable={{ vsftpd_pasv_enable | vsftpd_boolean_render() }}
+pasv_max_port={{ vsftpd_pasv_max_port | vsftpd_positive_integer_validate() }}
+pasv_min_port={{ vsftpd_pasv_min_port | vsftpd_positive_integer_validate() }}
+pasv_promiscuous={{ vsftpd_pasv_promiscuous | vsftpd_boolean_render() }}
+
+# List management
+chroot_list_file={{ vsftpd_chroot_list_file }}
+deny_email_enable={{ vsftpd_deny_email_enable | vsftpd_boolean_render() }}
+email_password_file={{ vsftpd_email_password_file }}
+secure_email_list_enable={{ vsftpd_secure_email_list_enable | vsftpd_boolean_render() }}
+userlist_deny={{ vsftpd_userlist_deny | vsftpd_boolean_render() }}
+userlist_enable={{ vsftpd_userlist_enable | vsftpd_boolean_render() }}
+userlist_file={{ vsftpd_userlist_file }}
+
