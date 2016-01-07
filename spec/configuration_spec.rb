@@ -108,7 +108,7 @@ describe file('/etc/vsftpd.conf') do
 
         # Misc
         should match /^background=NO$/
-        should match /^banned_email_file=\/(etc|\/tmp\/foo)\/vsftpd.banned_emails$/
+        should match /^banned_email_file=\/(etc|tmp\/foo)\/vsftpd.banned_emails$/
         should match /^banner_file=$/
         should match /^delete_failed_uploads=NO$/
         should match /^force_dot_files=NO$/
