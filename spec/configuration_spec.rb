@@ -108,7 +108,7 @@ describe file('/etc/vsftpd.conf') do
 
         # Misc
         should match /^background=NO$/
-        should match /^banned_email_file=\/etc\/vsftpd.banned_emails$/
+        should match /^banned_email_file=\/(etc|\/tmp\/foo)\/vsftpd.banned_emails$/
         should match /^banner_file=$/
         should match /^delete_failed_uploads=NO$/
         should match /^force_dot_files=NO$/
@@ -140,13 +140,13 @@ describe file('/etc/vsftpd.conf') do
         should match /^pasv_promiscuous=NO$/
 
         # List management
-        should match /^chroot_list_file=\/etc\/vsftpd.chroot_list$/
+        should match /^chroot_list_file=\/(etc|tmp\/foo)\/vsftpd.chroot_list$/
         should match /^deny_email_enable=NO$/
-        should match /^email_password_file=\/etc\/vsftpd.email_passwords$/
+        should match /^email_password_file=\/(etc|tmp\/foo)\/vsftpd.email_passwords$/
         should match /^secure_email_list_enable=NO$/
         should match /^userlist_deny=YES$/
         should match /^userlist_enable=NO$/
-        should match /^userlist_file=\/etc\/vsftpd.user_list$/
+        should match /^userlist_file=\/(etc|tmp\/foo)\/vsftpd.user_list$/
     }
 end
 
