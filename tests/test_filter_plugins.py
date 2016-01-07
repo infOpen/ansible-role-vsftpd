@@ -3,6 +3,8 @@ from ansible import errors
 from filter_plugins.vsftpd_boolean_render import vsftpd_boolean_render
 from filter_plugins.vsftpd_positive_integer_validate \
     import vsftpd_positive_integer_validate
+from filter_plugins.vsftpd_octal_mode_validate \
+    import vsftpd_octal_mode_validate
 
 
 #==============================================================================
@@ -96,6 +98,47 @@ def test_bad_type_vsftpd_positive_integer_validate(arg):
 def test_bad_value_vsftpd_positive_integer_validate(arg):
     with pytest.raises(errors.AnsibleFilterError) as errorInfo:
         vsftpd_positive_integer_validate(arg)
+
+    assert 'Invalid value: ' in str(errorInfo.value)
+
+
+#
+# Tests about vsftpd_octal_mode_validate
+#
+@pytest.mark.parametrize('arg', [
+    ('0754'),
+    ('   0754 '),
+    ('0754 '),
+    (' 0754'),
+    (0754)
+])
+def test_valid_vsftpd_octal_mode_validate(arg):
+    assert vsftpd_octal_mode_validate(arg) == '0754'
+
+
+@pytest.mark.parametrize('arg', [
+    (),
+    ([]),
+    ({})
+])
+def test_bad_type_vsftpd_octal_mode_validate(arg):
+    with pytest.raises(errors.AnsibleFilterError) as errorInfo:
+        vsftpd_octal_mode_validate(arg)
+
+    assert 'Invalid value type' in str(errorInfo.value)
+
+
+@pytest.mark.parametrize('arg', [
+    (''),
+    ('foo'),
+    (1234),
+    (755),
+    ('07539'),
+    (012)
+])
+def test_bad_value_vsftpd_octal_mode_validate(arg):
+    with pytest.raises(errors.AnsibleFilterError) as errorInfo:
+        vsftpd_octal_mode_validate(arg)
 
     assert 'Invalid value: ' in str(errorInfo.value)
 
