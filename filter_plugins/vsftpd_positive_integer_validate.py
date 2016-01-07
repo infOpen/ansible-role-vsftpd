@@ -1,5 +1,6 @@
 import re
 from ansible import errors
+from ansible.parsing.yaml.objects import AnsibleUnicode
 
 
 #
@@ -18,7 +19,7 @@ def vsftpd_positive_integer_validate(arg):
     """
 
     RE = re.compile('^\s*(?P<numeric_value>\d+)\s*$')
-    VALID_TYPES = [ str, int ]
+    VALID_TYPES = [ str, int, AnsibleUnicode ]
 
     arg_type = type(arg)
 
@@ -38,7 +39,7 @@ def vsftpd_positive_integer_validate(arg):
 
 
 class FilterModule(object):
-    """ Filters to manage vsftpd configuration with numeric values"""
+    """ Filters to manage vsftpd configuration with positive integer values"""
 
     filter_map = {
         'vsftpd_positive_integer_validate': vsftpd_positive_integer_validate

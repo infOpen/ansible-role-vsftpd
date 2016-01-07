@@ -64,7 +64,7 @@ def test_bad_string_vsftpd_boolean_render(arg):
 
 
 #
-# Tests about vsftpd_numeric_validate
+# Tests about vsftpd_positive_integer_validate
 #
 @pytest.mark.parametrize('arg', [
     ('10'),
@@ -73,7 +73,7 @@ def test_bad_string_vsftpd_boolean_render(arg):
     (' 10'),
     (10)
 ])
-def test_valid_vsftpd_numeric_validate(arg):
+def test_valid_vsftpd_positive_integer_validate(arg):
     assert vsftpd_positive_integer_validate(arg) == 10
 
 
@@ -82,7 +82,7 @@ def test_valid_vsftpd_numeric_validate(arg):
     ([]),
     ({})
 ])
-def test_bad_type_vsftpd_numeric_validate(arg):
+def test_bad_type_vsftpd_positive_integer_validate(arg):
     with pytest.raises(errors.AnsibleFilterError) as errorInfo:
         vsftpd_positive_integer_validate(arg)
 
@@ -93,7 +93,7 @@ def test_bad_type_vsftpd_numeric_validate(arg):
     (''),
     ('foo')
 ])
-def test_bad_value_vsftpd_numeric_validate(arg):
+def test_bad_value_vsftpd_positive_integer_validate(arg):
     with pytest.raises(errors.AnsibleFilterError) as errorInfo:
         vsftpd_positive_integer_validate(arg)
 
