@@ -21,12 +21,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
       # Update system and install requirements
       vm_config.vm.provision "shell" do |sh|
-        sh.inline = "test -d /tmp/ansible \
+        sh.inline = "test -d /usr/local/src/ansible \
                     || (sudo apt-get update \
                           && sudo apt-get install python-pip curl git -y \
                           && sudo pip install paramiko PyYAML Jinja2 httplib2 \
                                               six pytest \
-                          && cd /tmp \
+                          && cd /usr/local/src \
                           && git clone https://github.com/ansible/ansible.git \
                           && cd ansible \
                           && git checkout v2.0.0-0.8.rc3 \
