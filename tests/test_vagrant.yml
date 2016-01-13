@@ -5,7 +5,7 @@
 - hosts: all
   remote_user: vagrant
   roles:
-    - .
+    - vsftpd
   post_tasks:
     - include: ./test_common.yml
 
