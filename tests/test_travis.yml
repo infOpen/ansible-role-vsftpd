@@ -5,10 +5,11 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - "infOpen/ansible-role-vsftpd"
+    - "{{ role_name }}"
   post_tasks:
     - include: ./test_common.yml
   vars:
+    role_name: "{{ lookup('env','TRAVIS_REPO_SLUG') }}"
     vsftpd_banned_email_file: '/tmp/foo/vsftpd.banned_emails'
     vsftpd_chroot_list_file: '/tmp/foo/vsftpd.chroot_list'
     vsftpd_email_password_file: '/tmp/foo/vsftpd.email_passwords'

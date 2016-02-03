@@ -4,6 +4,14 @@
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
+# Ansible version
+ANSIBLE_DOWNLOAD_SOURCE = ENV['ANSIBLE_DOWNLOAD_SOURCE'] || "pip"
+ANSIBLE_GIT_CHECKOUT = ENV['ANSIBLE_GIT_CHECKOUT'] || "HEAD"
+ANSIBLE_GIT_REPOSITORY = ENV['ANSIBLE_GIT_REPOSITORY'] \
+                          || "https://github.com/ansible/ansible.git"
+
+# Managed boxes for this role (should have all platform and version defined in
+# meta/main.yml)
 VMS = {
   :trusty => {
     :box => "ubuntu/trusty64"
@@ -21,18 +29,26 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
       # Update system and install requirements
       vm_config.vm.provision "shell" do |sh|
-        sh.inline = "test -d /usr/local/src/ansible \
-                    || (sudo apt-get update \
-                          && sudo apt-get install python-pip curl git -y \
-                          && sudo pip install paramiko PyYAML Jinja2 httplib2 \
-                                              six pytest \
-                          && cd /usr/local/src \
-                          && git clone https://github.com/ansible/ansible.git \
-                          && cd ansible \
-                          && git checkout v2.0.0-0.8.rc3 \
-                          && git submodule init \
-                          && git submodule update \
-                          && sudo make install)"
+        if ANSIBLE_DOWNLOAD_SOURCE == 'git'
+          sh.inline = "test -d /usr/local/src/ansible \
+                        || (sudo apt-get update \
+                            && sudo apt-get install python-pip curl git -y \
+                            && sudo pip install paramiko PyYAML Jinja2 \
+                                                httplib2 six pytest \
+                            && cd /usr/local/src \
+                            && sudo git clone #{ANSIBLE_GIT_REPOSITORY} \
+                            && cd ansible \
+                            && sudo git checkout #{ANSIBLE_GIT_CHECKOUT} \
+                            && sudo git submodule init \
+                            && sudo git submodule update \
+                            && sudo make install)"
+        else
+          sh.inline = "test -f /usr/local/bin/ansible \
+                        || (sudo apt-get update \
+                            && sudo apt-get install python-pip curl git -y \
+                            && sudo pip install paramiko PyYAML Jinja2 \
+                                                httplib2 six pytest ansible)"
+        end
       end
 
       # Run pytest tests for filter plugins
@@ -48,6 +64,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vm_config.vm.provision "trigger" do |trigger|
         trigger.fire do
           ENV['ANSIBLE_ROLES_PATH'] = '../'
+          ENV['ANSIBLE_ROLE_NAME'] = File.basename(Dir.getwd)
         end
       end
 

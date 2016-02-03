@@ -1,5 +1,9 @@
 require 'serverspec'
 
+if ENV['TRAVIS']
+    set :backend, :exec
+end
+
 if ['debian', 'ubuntu'].include?(os[:family])
     describe 'Specific Debian and Ubuntu family checks' do
 
