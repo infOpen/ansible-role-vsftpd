@@ -1,5 +1,9 @@
 require 'serverspec'
 
+if ENV['TRAVIS']
+    set :backend, :exec
+end
+
 # Configuration file
 describe file('/etc/vsftpd.conf') do
 
