@@ -1,0 +1,23 @@
+---
+
+# Manage virtual users with BerkeleyDB
+- name: Create or update database
+  become: True
+  shell: "echo -e \"{{ item.key }}\n{{ item.value }}\" \
+            | db5.3_load -T -t hash {{ vsftpd_virtual_users_database }}"
+  with_items: "{{ vsftpd_virtual_users }}"
+  when: vsftpd_virtual_users_with_berkeleydb
+
+- name: Create directory structure
+  become: True
+  file:
+    path: "{{ vsftpd_virtual_user_root_directory
+              ~ '/' ~ item.0.key ~ item.1.path }}"
+    owner: "{{ item.1.owner }}"
+    group: "{{ item.1.group }}"
+    mode: "{{ item.1.mode }}"
+    state: directory
+  with_nested:
+    - "{{ vsftpd_virtual_users }}"
+    - "{{ vsftpd_virtual_user_directories }}"
+
