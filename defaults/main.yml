@@ -23,6 +23,19 @@ vsftpd_config_file_mode: '0644'
 vsftpd_config_file_owner: root
 vsftpd_config_file_group: root
 
+# Additional PAM configuration
+#-----------------------------
+vsftpd_pam_configuration_file: '/etc/pam.d/vsftpd'
+vsftpd_pam_configuration_file_content: |
+  # Standard behaviour for ftpd(8).
+  authrequiredpam_listfile.so item=user sense=deny file=/etc/ftpusers onerr=succeed
+  # Note: vsftpd handles anonymous logins on its own. Do not enable pam_ftp.so.
+  # Standard pam includes
+  @include common-account
+  @include common-session
+  @include common-auth
+  authrequiredpam_listfilepam_shells.so
+
 # Additional config files
 #------------------------
 vsftpd_additional_directories_group: root

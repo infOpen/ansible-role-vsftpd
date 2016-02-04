@@ -154,4 +154,19 @@ describe file('/etc/vsftpd.conf') do
     }
 end
 
+# Additionnal files
+additional_files = [
+  '/etc/pam.d/vsftpd',
+  '/etc/vsftpd.chroot_list',
+  '/etc/vsftpd.email_passwords',
+  '/etc/vsftpd.user_list',
+  '/etc/vsftpd.banned_emails'
+]
+
+for file_name in additional_files do
+  describe file(file_name) do
+    it { should exist }
+    it { should be_file }
+  end
+end
 
