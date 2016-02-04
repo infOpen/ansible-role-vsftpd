@@ -165,7 +165,7 @@ additional_files = {
     '/etc/vsftpd.banned_emails'
   ],
   "travis" => [
-    '/tmp/foo/vsftpd',
+    '/tmp/foo/vsftpd.pem',
     '/tmp/foo/vsftpd.chroot_list',
     '/tmp/foo/vsftpd.email_passwords',
     '/tmp/foo/vsftpd.user_list',
