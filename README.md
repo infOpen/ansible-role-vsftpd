@@ -38,8 +38,8 @@ You can manage virtual users with a berkeleyDB.
 - set "vsftpd_virtual_users_with_berkeleydb" to True
 - set "vsftpd_virtual_users" with your user list
   vsftpd_virtual_users:
-    - key: my_account
-      value: my_password
+    - username: my_account
+      password: my_password
 - change pam configuration with "vsftpd_pam_configuration_file_content"
 
 If you want to reset database, set "vsftpd_virtual_users_clean_database" to
@@ -87,7 +87,10 @@ True
     #-----------------------------------------
     vsftpd_virtual_users_with_berkeleydb: False
     vsftpd_virtual_users_clean_database: False
-    vsftpd_virtual_users_database: '/etc/vsftpd_users.db'
+    vsftpd_virtual_users_database_file_name: '/etc/vsftpd_users.db'
+    vsftpd_virtual_users_database_file_owner: 'root'
+    vsftpd_virtual_users_database_file_group: 'root'
+    vsftpd_virtual_users_database_file_mode: '0700'
     vsftpd_virtual_users: []
     vsftpd_virtual_user_root_directory: '/data/ftp'
     vsftpd_virtual_user_directories:
