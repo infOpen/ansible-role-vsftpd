@@ -32,6 +32,16 @@ This role contains two tests methods :
 - if Vagrant box running
     $ vagrant provision
 
+### Manage virtual users
+
+You can manage virtual users with a berkeleyDB.
+- set "vsftpd_virtual_users_with_berkeleydb" to True
+- set "vsftpd_virtual_users" with your user list
+  vsftpd_virtual_users:
+    - key: my_account
+      value: my_password
+- change pam configuration with "vsftpd_pam_configuration_file_content"
+
 ## Role Variables
 
 ### Default role variables
@@ -56,6 +66,39 @@ This role contains two tests methods :
     vsftpd_config_file_mode: '0644'
     vsftpd_config_file_owner: root
     vsftpd_config_file_group: root
+
+  # Additional PAM configuration
+  #-----------------------------
+  vsftpd_pam_configuration_file: '/etc/pam.d/vsftpd'
+  vsftpd_pam_configuration_file_content: |
+    # Standard behaviour for ftpd(8).
+    authrequiredpam_listfile.so item=user sense=deny file=/etc/ftpusers onerr=succeed
+    # Note: vsftpd handles anonymous logins on its own. Do not enable pam_ftp.so.
+    # Standard pam includes
+    @include common-account
+    @include common-session
+    @include common-auth
+    authrequiredpam_listfilepam_shells.so
+
+  # Virtual users management with BerkeleyDB
+  #-----------------------------------------
+  vsftpd_virtual_users_with_berkeleydb: False
+  vsftpd_virtual_users_database: '/etc/vsftpd_users.db'
+  vsftpd_virtual_users: []
+  vsftpd_virtual_user_root_directory: '/data/ftp'
+  vsftpd_virtual_user_directories:
+    - path: '/'
+      owner: ftp
+      group: ftp
+      mode: '0550'
+    - path: '/in'
+      owner: ftp
+      group: ftp
+      mode: '0770'
+    - path: '/out'
+      owner: ftp
+      group: ftp
+      mode: '0770'
 
     # Additional config files
     #------------------------
