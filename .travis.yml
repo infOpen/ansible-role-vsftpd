@@ -24,14 +24,7 @@ install:
   - bundle install
 
   # Install Ansible from devel, waiting 2.0 release and pytest.
-  - sudo pip install paramiko PyYAML Jinja2 httplib2 six pytest
-  - git clone https://github.com/ansible/ansible.git ansible_clone
-  - cd ansible_clone
-      && git checkout v2.0.0-0.8.rc3
-      && git submodule init
-      && git submodule update
-      && sudo make install
-      && cd ..
+  - sudo pip install paramiko PyYAML Jinja2 httplib2 six pytest ansible
 
   # Add ansible.cfg to pick up roles path.
   - "cp ./tests/ansible.cfg ./"
