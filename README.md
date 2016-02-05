@@ -42,6 +42,9 @@ You can manage virtual users with a berkeleyDB.
       value: my_password
 - change pam configuration with "vsftpd_pam_configuration_file_content"
 
+If you want to reset database, set "vsftpd_virtual_users_clean_database" to
+True
+
 ## Role Variables
 
 ### Default role variables
@@ -83,6 +86,7 @@ You can manage virtual users with a berkeleyDB.
     # Virtual users management with BerkeleyDB
     #-----------------------------------------
     vsftpd_virtual_users_with_berkeleydb: False
+    vsftpd_virtual_users_clean_database: False
     vsftpd_virtual_users_database: '/etc/vsftpd_users.db'
     vsftpd_virtual_users: []
     vsftpd_virtual_user_root_directory: '/data/ftp'

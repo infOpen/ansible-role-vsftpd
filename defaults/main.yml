@@ -39,6 +39,7 @@ vsftpd_pam_configuration_file_content: |
 # Virtual users management with BerkeleyDB
 #-----------------------------------------
 vsftpd_virtual_users_with_berkeleydb: False
+vsftpd_virtual_users_clean_database: False
 vsftpd_virtual_users_database: '/etc/vsftpd_users.db'
 vsftpd_virtual_users: []
 vsftpd_virtual_user_root_directory: '/data/ftp'

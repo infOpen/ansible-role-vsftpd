@@ -1,6 +1,13 @@
 ---
 
 # Manage virtual users with BerkeleyDB
+- name: Clean users database
+  become: True
+  file:
+    path: "{{ vsftpd_virtual_users_database }}"
+    state: absent
+  when: vsftpd_virtual_users_clean_database
+
 - name: Create or update database
   become: True
   shell: "echo -e \"{{ item.key }}\n{{ item.value }}\" \
