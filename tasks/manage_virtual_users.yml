@@ -6,6 +6,7 @@
   shell: "echo -e \"{{ item.key }}\n{{ item.value }}\" \
             | db5.3_load -T -t hash {{ vsftpd_virtual_users_database }}"
   with_items: "{{ vsftpd_virtual_users }}"
+  changed_when: False
   when: vsftpd_virtual_users_with_berkeleydb
 
 - name: Create directory structure
