@@ -8,7 +8,7 @@ if ['debian', 'ubuntu'].include?(os[:family])
     describe 'Specific Debian and Ubuntu family checks' do
 
         it 'install role packages' do
-            packages = Array[ 'vsftpd' ]
+            packages = Array[ 'vsftpd', 'db5.3-util' ]
 
             packages.each do |pkg_name|
                 expect(package(pkg_name)).to be_installed

@@ -2,6 +2,7 @@
 
 vsftpd_packages:
   - vsftpd
+  - db5.3-util
 
 vsftpd_package_state: present
 

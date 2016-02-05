@@ -154,4 +154,31 @@ describe file('/etc/vsftpd.conf') do
     }
 end
 
+# Additionnal files
+# Special case with Travis due to problem with some files right
+additional_files = {
+  "default" => [
+    '/etc/pam.d/vsftpd',
+    '/etc/vsftpd.chroot_list',
+    '/etc/vsftpd.email_passwords',
+    '/etc/vsftpd.user_list',
+    '/etc/vsftpd.banned_emails'
+  ],
+  "travis" => [
+    '/tmp/foo/vsftpd.pem',
+    '/tmp/foo/vsftpd.chroot_list',
+    '/tmp/foo/vsftpd.email_passwords',
+    '/tmp/foo/vsftpd.user_list',
+    '/tmp/foo/vsftpd.banned_emails'
+  ]
+}
+
+key = ENV['TRAVIS'].nil? ? 'default' : 'travis'
+
+for file_name in additional_files[key] do
+  describe file(file_name) do
+    it { should exist }
+    it { should be_file }
+  end
+end
 
