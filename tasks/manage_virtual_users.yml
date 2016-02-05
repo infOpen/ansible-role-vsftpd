@@ -8,13 +8,26 @@
     state: absent
   when: vsftpd_virtual_users_clean_database
 
+- name: Generate user list
+  become: True
+  template:
+    src: templates/user_tmp_list.j2
+    dest: /root/vsftpd_user_list_tmp.txt
+    owner: root
+    group: root
+    mode: '0400'
+
 - name: Create or update database
   become: True
-  shell: "echo -e \"{{ item.username }}\n{{ item.password }}\" \
-            | db5.3_load -T -t hash \
-              {{ vsftpd_virtual_users_database_file_name }}"
-  with_items: "{{ vsftpd_virtual_users }}"
+  shell: "db5.3_load -T -t hash \
+            -f /root/vsftpd_user_list_tmp.txt \
+            {{ vsftpd_virtual_users_database_file_name }}.db"
   changed_when: False
+
+- name: Delete temp user list
+  file:
+    path: /root/vsftpd_user_list_tmp.txt
+    state: absent
 
 - name: Set database permissions
   become: True
