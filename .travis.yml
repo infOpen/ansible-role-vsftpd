@@ -15,6 +15,10 @@ rvm:
 env:
   - ANSIBLE_ROLES_PATH=${TRAVIS_BUILD_DIR%/*/*}
 
+notifications:
+  webhooks:
+    - https://galaxy.ansible.com/api/v1/notifications/
+
 before_install:
   # Make sure everything's up to date.
   - sudo apt-get update -qq
