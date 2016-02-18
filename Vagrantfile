@@ -63,9 +63,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       # Needed with 2.0 home path change
       vm_config.vm.provision "trigger" do |trigger|
         trigger.fire do
-          ENV['ANSIBLE_ROLES_PATH'] = '../'
+          ENV['ANSIBLE_ROLES_PATH'] = '../:../roles/'
           ENV['ANSIBLE_ROLE_NAME'] = File.basename(Dir.getwd)
         end
+      end
+
+      # Install role requirements (need vagrant-triggers plugin installed !)
+      config.trigger.before [:up, :provision] do
+        info "Install or update role requirements"
+        run "ansible-galaxy install \
+              -r ./tests/requirements.yml \
+              -p ../roles/ \
+              --force"
       end
 
       # Run Ansible provisioning

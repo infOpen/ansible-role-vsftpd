@@ -32,6 +32,12 @@ This role contains two tests methods :
 - if Vagrant box running
     $ vagrant provision
 
+### Manage firewall rules
+
+You can manage firewall rules. The feature use Temelio/ferm role.
+- set "vsftpd_firewall_managed_with_ferm" to True
+- set "vsftpd_ferm_input_rules" with firewall rules using ferm format
+
 ### Manage virtual users
 
 You can manage virtual users with a berkeleyDB.
@@ -69,6 +75,20 @@ True
     vsftpd_config_file_mode: '0644'
     vsftpd_config_file_owner: root
     vsftpd_config_file_group: root
+
+    # Firewall configuration
+    #-----------------------
+    vsftpd_firewall_managed_with_ferm: True
+    vsftpd_ferm_input_rules_file: '/etc/ferm/input/vsftpd.conf'
+    vsftpd_ferm_files_owner: 'root'
+    vsftpd_ferm_files_group: 'root'
+    vsftpd_ferm_files_mode: '0400'
+    vsftpd_ferm_main_config_file: '/etc/ferm/ferm.conf'
+    vsftpd_ferm_service_name: 'ferm'
+    vsftpd_ferm_input_rules:
+      - "proto tcp mod tcp dport {{ vsftpd_listen_port }} mod conntrack ctstate (NEW ESTABLISHED) mod comment comment 'Allow ftp inbound connections on port 21' ACCEPT;"
+      - "proto tcp mod tcp dport 20 mod conntrack ctstate (RELATED ESTABLISHED) mod comment comment 'Allow ftp inbound connections on port 20' ACCEPT;"
+      - "proto tcp mod tcp dport {{ vsftpd_pasv_min_port ~ ':' ~ vsftpd_pasv_max_port }} mod conntrack ctstate (NEW RELATED ESTABLISHED) mod comment comment 'Allow passive inbound connections' ACCEPT;"
 
     # Additional PAM configuration
     #-----------------------------
@@ -272,7 +292,7 @@ True
 
 ## Dependencies
 
-None
+Optionnal dependency : Temelio/ferm
 
 ## Embed filter plugins
 
