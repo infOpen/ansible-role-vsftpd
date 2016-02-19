@@ -19,6 +19,13 @@ before_install:
   # Make sure everything's up to date.
   - sudo apt-get update -qq
 
+  # Due to Ansible bug (Core issue : 2473), to remove once released
+  - >
+    git clone https://github.com/ansible/ansible.git --recursive
+    && cd ansible
+    && sudo make install
+    && cd ..
+
 install:
   # Install ruby dependencies to run serverspec tests
   - bundle install
