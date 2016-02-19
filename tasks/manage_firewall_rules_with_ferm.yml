@@ -1,0 +1,26 @@
+---
+
+# Add firewall rules managed by ferm
+
+- name: Create ferm input rules file
+  become: True
+  template:
+    src: "{{ role_path }}/templates/ferm_rules.conf.j2"
+    dest: "{{ vsftpd_ferm_input_rules_file }}"
+    owner: "{{ vsftpd_ferm_files_owner }}"
+    group: "{{ vsftpd_ferm_files_group }}"
+    mode: "{{ vsftpd_ferm_files_mode }}"
+  register: vsftpd_ferm_rules_change
+
+- name: Check ferm rules
+  become: True
+  command: "ferm -n {{ vsftpd_ferm_main_config_file }}"
+  changed_when: False
+
+- name: Update ferm rules
+  become: True
+  service:
+    name: "{{ vsftpd_ferm_service_name }}"
+    state: 'restarted'
+  when: vsftpd_ferm_rules_change.changed
+

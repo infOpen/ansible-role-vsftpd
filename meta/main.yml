@@ -13,5 +13,7 @@ galaxy_info:
   galaxy_tags:
     - system
     - web
-dependencies: []
+dependencies:
+  - role: Temelio.ferm
+    when: vsftpd_firewall_managed_with_ferm
 

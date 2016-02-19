@@ -35,3 +35,9 @@ if ['debian', 'ubuntu'].include?(os[:family])
     end
 end
 
+describe iptables do
+  it { should have_rule('-A INPUT -p tcp -m tcp --dport 21 -m conntrack --ctstate NEW,ESTABLISHED -m comment --comment "Allow ftp inbound connections on port 21" -j ACCEPT') }
+  it { should have_rule('-A INPUT -p tcp -m tcp --dport 20 -m conntrack --ctstate RELATED,ESTABLISHED -m comment --comment "Allow ftp inbound connections on port 20" -j ACCEPT') }
+  it { should have_rule('-A INPUT -p tcp -m tcp --dport 60000:60010 -m conntrack --ctstate NEW,RELATED,ESTABLISHED -m comment --comment "Allow passive inbound connections" -j ACCEPT') }
+end
+

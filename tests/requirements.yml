@@ -1,0 +1,6 @@
+---
+
+# Iptables management
+- src: https://github.com/Temelio/ansible-role-ferm.git
+  version: 0.1.0
+  name: Temelio.ferm
