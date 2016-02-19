@@ -224,8 +224,8 @@ vsftpd_xferlog_std_format: False
 vsftpd_pasv_address: ''
 vsftpd_pasv_addr_resolve: False
 vsftpd_pasv_enable: True
-vsftpd_pasv_max_port: 0
-vsftpd_pasv_min_port: 0
+vsftpd_pasv_max_port: 60010
+vsftpd_pasv_min_port: 60000
 vsftpd_pasv_promiscuous: False
 
 # List management

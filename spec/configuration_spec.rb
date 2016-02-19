@@ -139,8 +139,8 @@ describe file('/etc/vsftpd.conf') do
         # Passive mode options
         should match /^pasv_addr_resolve=NO$/
         should match /^pasv_enable=YES$/
-        should match /^pasv_max_port=0$/
-        should match /^pasv_min_port=0$/
+        should match /^pasv_max_port=60010$/
+        should match /^pasv_min_port=60000$/
         should match /^pasv_promiscuous=NO$/
 
         # List management
