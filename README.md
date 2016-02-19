@@ -326,7 +326,7 @@ Usage :
 
     - hosts: servers
       roles:
-         - { role: achaussier.vsftpd }
+         - { role: infOpen.vsftpd }
 
 ## License
 
