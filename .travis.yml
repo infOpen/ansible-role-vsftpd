@@ -19,6 +19,19 @@ before_install:
   # Make sure everything's up to date.
   - sudo apt-get update -qq
 
+  # Install ruby dependencies to run serverspec tests
+  - rvmsudo gem install serverspec rspec
+
+  # Install Ansible and pytest.
+  - >
+    sudo pip install ansible paramiko PyYAML Jinja2 httplib2 six pytest
+    ansible-lint
+
+  # Remove rvmsudo warning
+  - >
+    [[ $(sudo grep secure_path /etc/sudoers) ]]
+    && export rvmsudo_secure_path=1 || export rvmsudo_secure_path=0
+
   # Due to Ansible bug (Core issue : 2473), to remove once released
   - >
     git clone https://github.com/ansible/ansible.git --recursive
@@ -27,11 +40,6 @@ before_install:
     && cd ..
 
 install:
-  # Install ruby dependencies to run serverspec tests
-  - bundle install
-
-  # Install Ansible from devel, waiting 2.0 release and pytest.
-  - sudo pip install paramiko PyYAML Jinja2 httplib2 six pytest ansible
 
   # Add ansible.cfg to pick up roles path.
   - "cp ./tests/ansible.cfg ./"
@@ -43,20 +51,28 @@ script:
   # Check the role/playbook's syntax.
   - ansible-playbook -i tests/inventory tests/test_travis.yml --syntax-check
 
+  # Run linter on role
+  - ansible-lint tasks/main.yml
+
   # Run filter plugins tests
   - py.test -v
 
   # Run the role/playbook with ansible-playbook.
-  - ansible-playbook -i tests/inventory tests/test_travis.yml --connection=local --sudo
+  - >
+    ansible-playbook -i tests/inventory tests/test_travis.yml
+    --connection=local --sudo
 
   # Run the role/playbook again, checking to make sure it's idempotent.
-  # Set change=1 due to a bug in ansible service module always return changed
   - >
-    ansible-playbook -i tests/inventory tests/test_travis.yml --connection=local --sudo
+    ansible-playbook -i tests/inventory tests/test_travis.yml
+    --connection=local --sudo
     | grep -q 'changed=[0].*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
 
   # Run serverspec tests
-  - bundle exec rake
+  - rvmsudo rspec
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
 
