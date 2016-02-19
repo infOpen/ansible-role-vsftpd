@@ -16,6 +16,20 @@
   become: True
   command: "ferm -n {{ vsftpd_ferm_main_config_file }}"
   changed_when: False
+  ignore_errors: True
+  register: vsftpd_ferm_check_configuration
+
+- name: Remove errored ferm config file
+  become: True
+  file:
+    dest: "{{ vsftpd_ferm_input_rules_file }}"
+    state: 'absent'
+  when: vsftpd_ferm_check_configuration | failed
+
+- name: Exit due to ferm configuration error
+  fail:
+    msg: 'Ferm configuration error, fix it before continue !'
+  when: vsftpd_ferm_check_configuration | failed
 
 - name: Update ferm rules
   become: True
