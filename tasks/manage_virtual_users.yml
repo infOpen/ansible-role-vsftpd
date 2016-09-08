@@ -46,7 +46,7 @@
     group: "{{ item.1.group }}"
     mode: "{{ item.1.mode }}"
     state: directory
-  no_logs: True
+  no_log: True
   with_nested:
     - "{{ vsftpd_virtual_users }}"
     - "{{ vsftpd_virtual_user_directories }}"
