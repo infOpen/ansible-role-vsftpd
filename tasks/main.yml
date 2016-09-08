@@ -59,11 +59,3 @@
   tags:
     - config
     - vsftpd
-
-- name: Include tasks about firewall configuration with ferm
-  include: "{{ role_path }}/tasks/manage_firewall_rules_with_ferm.yml"
-  when: vsftpd_firewall_managed_with_ferm
-  tags:
-    - config
-    - vsftpd
-
