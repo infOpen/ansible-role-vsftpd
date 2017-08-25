@@ -2,6 +2,13 @@
 
 # Main tasks file for vsftpd role
 
+- name: 'INIT | Manage variables to use for our target'
+  include: "{{ role_path }}/tasks/manage_variables.yml"
+  tags:
+    - 'role::vsftpd'
+    - 'role::vsftpd::init'
+
+
 - name: Check configuration values
   include: check_configuration.yml
   tags:

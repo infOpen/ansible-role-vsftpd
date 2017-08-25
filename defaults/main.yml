@@ -222,4 +222,3 @@ vsftpd_secure_email_list_enable: False
 vsftpd_userlist_deny: True
 vsftpd_userlist_enable: False
 vsftpd_userlist_file: '/etc/vsftpd.user_list'
-
