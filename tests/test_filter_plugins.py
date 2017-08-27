@@ -1,3 +1,7 @@
+"""
+Tests about role custom filters
+"""
+
 import pytest
 from ansible import errors
 from filter_plugins.vsftpd_boolean_render import vsftpd_boolean_render
@@ -7,10 +11,6 @@ from filter_plugins.vsftpd_octal_mode_validate \
     import vsftpd_octal_mode_validate
 
 
-#==============================================================================
-# Tests
-#==============================================================================
-
 #
 # Tests about vsftpd_boolean_render
 #
@@ -19,11 +19,15 @@ from filter_plugins.vsftpd_octal_mode_validate \
     ('YES'),
     ('Yes'),
     ('true'),
+    ('TRUE'),
     ('True'),
-    ('true'),
     (True)
 ])
 def test_true_vsftpd_boolean_render(arg):
+    """
+    Test boolean with true values
+    """
+
     assert vsftpd_boolean_render(arg) == 'YES'
 
 
@@ -32,11 +36,15 @@ def test_true_vsftpd_boolean_render(arg):
     ('NO'),
     ('No'),
     ('false'),
+    ('FALSE'),
     ('False'),
-    ('false'),
     (False)
 ])
 def test_false_vsftpd_boolean_render(arg):
+    """
+    Test boolean filter with false values
+    """
+
     assert vsftpd_boolean_render(arg) == 'NO'
 
 
@@ -47,6 +55,10 @@ def test_false_vsftpd_boolean_render(arg):
     (1)
 ])
 def test_bad_type_vsftpd_boolean_render(arg):
+    """
+    Test boolean filter with bad value type
+    """
+
     with pytest.raises(errors.AnsibleFilterError) as errorInfo:
         vsftpd_boolean_render(arg)
 
@@ -59,6 +71,10 @@ def test_bad_type_vsftpd_boolean_render(arg):
     ('bar')
 ])
 def test_bad_string_vsftpd_boolean_render(arg):
+    """
+    Test boolean filter with bad string values
+    """
+
     with pytest.raises(errors.AnsibleFilterError) as errorInfo:
         vsftpd_boolean_render(arg)
 
@@ -76,6 +92,10 @@ def test_bad_string_vsftpd_boolean_render(arg):
     (10)
 ])
 def test_valid_vsftpd_positive_integer_validate(arg):
+    """
+    Test integer filter with valid values
+    """
+
     assert vsftpd_positive_integer_validate(arg) == 10
 
 
@@ -85,6 +105,10 @@ def test_valid_vsftpd_positive_integer_validate(arg):
     ({})
 ])
 def test_bad_type_vsftpd_positive_integer_validate(arg):
+    """
+    Test integer filter with bad types
+    """
+
     with pytest.raises(errors.AnsibleFilterError) as errorInfo:
         vsftpd_positive_integer_validate(arg)
 
@@ -96,6 +120,10 @@ def test_bad_type_vsftpd_positive_integer_validate(arg):
     ('foo')
 ])
 def test_bad_value_vsftpd_positive_integer_validate(arg):
+    """
+    Test integer filter with bad string values
+    """
+
     with pytest.raises(errors.AnsibleFilterError) as errorInfo:
         vsftpd_positive_integer_validate(arg)
 
@@ -113,6 +141,9 @@ def test_bad_value_vsftpd_positive_integer_validate(arg):
     (0754)
 ])
 def test_valid_vsftpd_octal_mode_validate(arg):
+    """
+    Test octal filter with valid values
+    """
     assert vsftpd_octal_mode_validate(arg) == '0754'
 
 
@@ -122,6 +153,10 @@ def test_valid_vsftpd_octal_mode_validate(arg):
     ({})
 ])
 def test_bad_type_vsftpd_octal_mode_validate(arg):
+    """
+    Test octal filter with bad types
+    """
+
     with pytest.raises(errors.AnsibleFilterError) as errorInfo:
         vsftpd_octal_mode_validate(arg)
 
@@ -137,8 +172,11 @@ def test_bad_type_vsftpd_octal_mode_validate(arg):
     (012)
 ])
 def test_bad_value_vsftpd_octal_mode_validate(arg):
+    """
+    Test octal filter with bad values
+    """
+
     with pytest.raises(errors.AnsibleFilterError) as errorInfo:
         vsftpd_octal_mode_validate(arg)
 
     assert 'Invalid value: ' in str(errorInfo.value)
-

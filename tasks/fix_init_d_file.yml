@@ -1,0 +1,20 @@
+---
+
+# Fix init.d script
+
+- name: 'INSTALL | FIX | Check if init.d file exists'
+  stat:
+    path: "{{ vsftpd_paths.files.init_d.path }}"
+  register: 'check_vsftpd_init_d_file'
+
+
+- name: 'INSTALL | FIX | Fix bad negation in init.d script'
+  lineinfile:
+    dest: "{{ vsftpd_paths.files.init_d.path }}"
+    insertafter: '^\t{3}_PID=.*'
+    regexp: '^(\t{3}if )!?(.*)'
+    line: '\1\2'
+    backrefs: True
+    state: 'present'
+  notify: restart vsftpd
+  when: "check_vsftpd_init_d_file.stat.exists"

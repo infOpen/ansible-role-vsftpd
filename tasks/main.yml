@@ -28,6 +28,14 @@
     - vsftpd
   when: ansible_os_family == "Debian"
 
+
+- name: 'INSTALL | Include tasks about init.d script fix'
+  include: "{{ role_path }}/tasks/fix_init_d_file.yml"
+  tags:
+    - 'role::vsftpd'
+    - 'role::vsftpd::install'
+
+
 - name: Create configuration directory
   become: True
   file:
