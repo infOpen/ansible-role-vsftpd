@@ -16,5 +16,5 @@
     line: '\1\2'
     backrefs: True
     state: 'present'
-  notify: restart vsftpd
+  notify: 'HANDLER | Restart vsftpd'
   when: "check_vsftpd_init_d_file.stat.exists"

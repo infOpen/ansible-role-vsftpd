@@ -1,13 +1,10 @@
 ---
 
-- name: install vsftpd packages
-  become: True
+- name: 'INSTALL | APT | install vsftpd packages'
   apt:
     name: "{{ item }}"
     state: "{{ vsftpd_package_state }}"
     update_cache: True
     cache_valid_time: 3600
+  notify: 'HANDLER | Restart vsftpd'
   with_items: "{{ vsftpd_packages }}"
-  notify:
-    - restart vsftpd
-

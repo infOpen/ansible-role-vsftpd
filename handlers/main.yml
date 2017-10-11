@@ -2,10 +2,13 @@
 
 # Handlers main file for vsftpd role
 
-- name: restart vsftpd
+- name: 'HANDLER | Restart vsftpd'
   become: True
   service:
     name: "{{ vsftpd_service_name }}"
-    state: restarted
-  when: vsftpd_service_state != "stopped"
-
+    state: 'restarted'
+  when: "vsftpd_service_state != 'stopped'"
+  tags:
+    - 'role::vsftpd'
+    - 'role::vsftpd::config'
+    - 'role::vsftpd::install'

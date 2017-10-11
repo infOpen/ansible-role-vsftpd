@@ -1,29 +1,29 @@
 ---
 
-- name: Create additional files directories
+- name: 'CONFIG | Create additional files directories'
   become: True
   file:
     dest: "{{ item | dirname }}"
     owner: "{{ vsftpd_additional_directories_owner }}"
     group: "{{ vsftpd_additional_directories_group }}"
     mode: "{{ vsftpd_additional_directories_mode }}"
-    state: directory
+    state: 'directory'
   with_items:
-    - "{{ vsftpd_ca_certs_file }}"
-    - "{{ vsftpd_dsa_cert_file }}"
-    - "{{ vsftpd_dsa_private_key_file }}"
-    - "{{ vsftpd_rsa_cert_file }}"
-    - "{{ vsftpd_rsa_private_key_file }}"
-    - "{{ vsftpd_banned_email_file }}"
-    - "{{ vsftpd_banner_file }}"
-    - "{{ vsftpd_chroot_list_file }}"
-    - "{{ vsftpd_email_password_file }}"
-    - "{{ vsftpd_userlist_file }}"
-    - "{{ vsftpd_pam_configuration_file }}"
-  when: item and (item|dirname != '') and (item|dirname != '/')
+    - "{{ vsftpd_paths.files.ca_certs.path | default('') }}"
+    - "{{ vsftpd_paths.files.dsa_cert.path | default('') }}"
+    - "{{ vsftpd_paths.files.dsa_private_key.path | default('') }}"
+    - "{{ vsftpd_paths.files.rsa_cert.path | default('') }}"
+    - "{{ vsftpd_paths.files.rsa_private_key.path | default('') }}"
+    - "{{ vsftpd_paths.files.banned_email.path | default('') }}"
+    - "{{ vsftpd_paths.files.banner.path | default('') }}"
+    - "{{ vsftpd_paths.files.chroot_list.path | default('') }}"
+    - "{{ vsftpd_paths.files.email_password.path | default('') }}"
+    - "{{ vsftpd_paths.files.userlist.path | default('') }}"
+    - "{{ vsftpd_paths.files.pam_configuration.path | default('') }}"
+  when: "item and (item|dirname != '') and (item|dirname != '/')"
 
 
-- name: Create additional files with their content if needed
+- name: 'CONFIG | Create additional files with their content if needed'
   become: True
   copy:
     content: "{{ item.1 }}"
@@ -33,31 +33,30 @@
     mode: "{{ vsftpd_additional_files_mode }}"
   with_together:
     - [
-        "{{ vsftpd_ca_certs_file }}",
-        "{{ vsftpd_dsa_cert_file }}",
-        "{{ vsftpd_dsa_private_key_file }}",
-        "{{ vsftpd_rsa_cert_file }}",
-        "{{ vsftpd_rsa_private_key_file }}",
-        "{{ vsftpd_banned_email_file }}",
-        "{{ vsftpd_banner_file }}",
-        "{{ vsftpd_chroot_list_file }}",
-        "{{ vsftpd_email_password_file }}",
-        "{{ vsftpd_userlist_file }}",
-        "{{ vsftpd_pam_configuration_file }}"
-      ]
+      "{{ vsftpd_paths.files.ca_certs.path | default('') }}",
+      "{{ vsftpd_paths.files.dsa_cert.path | default('') }}",
+      "{{ vsftpd_paths.files.dsa_private_key.path | default('') }}",
+      "{{ vsftpd_paths.files.rsa_cert.path | default('') }}",
+      "{{ vsftpd_paths.files.rsa_private_key.path | default('') }}",
+      "{{ vsftpd_paths.files.banned_email.path | default('') }}",
+      "{{ vsftpd_paths.files.banner.path | default('') }}",
+      "{{ vsftpd_paths.files.chroot_list.path | default('') }}",
+      "{{ vsftpd_paths.files.email_password.path | default('') }}",
+      "{{ vsftpd_paths.files.userlist.path | default('') }}",
+      "{{ vsftpd_paths.files.pam_configuration.path | default('') }}"
+    ]
     - [
-        "{{ vsftpd_ca_certs_file_content }}",
-        "{{ vsftpd_dsa_cert_file_content }}",
-        "{{ vsftpd_dsa_private_key_file_content }}",
-        "{{ vsftpd_rsa_cert_file_content }}",
-        "{{ vsftpd_rsa_private_key_file_content }}",
-        "{{ vsftpd_banned_email_file_content }}",
-        "{{ vsftpd_banner_file_content }}",
-        "{{ vsftpd_chroot_list_file_content }}",
-        "{{ vsftpd_email_password_file_content }}",
-        "{{ vsftpd_userlist_file_content }}",
-        "{{ vsftpd_pam_configuration_file_content }}"
-      ]
-  when: item.0
-  notify: restart vsftpd
-
+      "{{ vsftpd_ca_certs_file_content }}",
+      "{{ vsftpd_dsa_cert_file_content }}",
+      "{{ vsftpd_dsa_private_key_file_content }}",
+      "{{ vsftpd_rsa_cert_file_content }}",
+      "{{ vsftpd_rsa_private_key_file_content }}",
+      "{{ vsftpd_banned_email_file_content }}",
+      "{{ vsftpd_banner_file_content }}",
+      "{{ vsftpd_chroot_list_file_content }}",
+      "{{ vsftpd_email_password_file_content }}",
+      "{{ vsftpd_userlist_file_content }}",
+      "{{ vsftpd_pam_configuration_file_content }}"
+    ]
+  when: "item.0"
+  notify: 'HANDLER | Restart vsftpd'
