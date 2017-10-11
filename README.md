@@ -6,8 +6,11 @@ Install vsftpd package.
 
 ## Requirements
 
-This role requires Ansible 2.0 or higher,
+This role requires Ansible 2.2 or higher,
 and platform requirements are listed in the metadata file.
+
+It can work with older version but without garanty, due to minimal Ansible
+version required by Molecule.
 
 ## Testing
 
