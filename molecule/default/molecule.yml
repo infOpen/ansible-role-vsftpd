@@ -1,59 +1,43 @@
 ---
 
-ansible:
-  extra_vars:
-    ansible_python_interpreter: '/usr/bin/env python2.7'
-  raw_env_vars:
-    ANSIBLE_NOCOWS: 1
-  group_vars:
-    all: {}
 dependency:
   name: 'galaxy'
 driver:
   name: 'docker'
-docker:
-  containers:
-    - name: 'vsftpd-docker-jessie'
-      image: 'debian'
-      image_version: 'jessie'
-    - name: 'vsftpd-docker-trusty'
-      image: 'ubuntu'
-      image_version: 'trusty'
-    - name: 'vsftpd-docker-xenial'
-      image: 'ubuntu'
-      image_version: 'xenial'
-molecule:
-  ignore_paths:
-    - '.git'
-    - '.molecule'
-    - '.tox'
-    - '.vagrant'
-vagrant:
-  platforms:
-    - name: 'jessie64'
-      box: 'debian/jessie64'
-      linked_clone: True
-    - name: 'trusty64'
-      box: 'ubuntu/trusty64'
-      linked_clone: True
-    - name: 'xenial64'
-      box: 'ubuntu/xenial64'
-      linked_clone: True
-  providers:
-    - name: 'virtualbox'
-      type: 'virtualbox'
-      options:
-        memory: 512
-        cpus: 1
-  instances:
-    - name: 'vsftpd-vagrant'
-      interfaces:
-        - network_name: 'private_network'
-          type: 'dhcp'
-          auto_config: True
-      options:
-        append_platform_to_hostname: True
+lint:
+  name: 'yamllint'
+platforms:
+  - name: 'vsftpd-docker-jessie'
+    image: 'debian'
+    image_version: 'jessie'
+  - name: 'vsftpd-docker-trusty'
+    image: 'ubuntu'
+    image_version: 'trusty'
+  - name: 'vsftpd-docker-xenial'
+    image: 'ubuntu'
+    image_version: 'xenial'
+provisioner:
+  name: 'ansible'
+  lint:
+    name: 'ansible-lint'
+  inventory:
+    group_vars:
+      all:
+        ansible_python_interpreter: '/usr/bin/env python2.7'
+        __vsftpd_main_config:
+          boolean_options:
+            listen: YES
+            listen_ipv6: NO
+          string_options:
+            listen_address: '127.0.0.1'
+        vsftpd_main_config: "{{ _vsftpd_main_config | combine(__vsftpd_main_config, recursive=True) }}"
+scenario:
+  name: 'default'
 verifier:
   name: 'testinfra'
+  additional_files_or_dirs:
+    - '../../tests'
+  lint:
+    name: 'flake8'
   options:
     sudo: True

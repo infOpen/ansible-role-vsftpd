@@ -17,7 +17,12 @@
 
 
 - hosts: 'all'
+  pre_tasks:
+    - name: 'PREREQUISITES | APT | Install net-tools, procps test dependencies'
+      become: True
+      raw: 'apt-get install -qq net-tools procps'
+      changed_when: False
   roles:
     - role: "{{ role_name }}"
   vars:
-    role_name: "{{ playbook_dir | basename }}"
+    role_name: "{{ playbook_dir | dirname | dirname | basename }}"

@@ -2,10 +2,12 @@
 Role tests
 """
 
+import os
 import pytest
 from testinfra.utils.ansible_runner import AnsibleRunner
 
-testinfra_hosts = AnsibleRunner('.molecule/ansible_inventory').get_hosts('all')
+testinfra_hosts = AnsibleRunner(
+    os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('all')
 
 
 @pytest.mark.parametrize('name', [
@@ -28,7 +30,12 @@ def test_service(host):
     service = host.service('vsftpd')
 
     assert service.is_enabled
-    assert service.is_running
+
+    # if host.system_info.codename in ['jessie', 'xenial']:
+    if host.file('/etc/init.d/vsftpd').exists:
+        assert 'is running' in host.check_output('/etc/init.d/vsftpd status')
+    else:
+        assert service.is_running
 
 
 def test_process(host):
