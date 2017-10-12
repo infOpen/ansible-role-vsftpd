@@ -2,39 +2,51 @@
 
 # Main tasks file for vsftpd role
 
-- name: Check configuration values
-  include: check_configuration.yml
+- name: 'INIT | Manage variables to use for our target'
+  include: "{{ role_path }}/tasks/manage_variables.yml"
   tags:
-    - install
-    - vsftpd
+    - 'role::vsftpd'
+    - 'role::vsftpd::init'
 
-- name: Load the OS specific varibles
-  include_vars: "{{ role_path }}/vars/{{ ansible_os_family }}.yml"
+
+- name: 'CHECKS | Check configuration values'
+  include: "{{ role_path }}/tasks/check_configuration.yml"
   tags:
-    - install
-    - vsftpd
+    - 'role::vsftpd'
+    - 'role::vsftpd::config'
+    - 'role::vsftpd::install'
 
-- name: Install on Debian like os
-  include: install_debian.yml
+
+- name: 'INSTALL | Install on OS family'
+  become: True
+  include: "{{ role_path }}/tasks/install/{{ ansible_os_family | lower }}_family.yml"
   tags:
-    - install
-    - vsftpd
-  when: ansible_os_family == "Debian"
+    - 'role::vsftpd'
+    - 'role::vsftpd::install'
 
-- name: Create configuration directory
+
+- name: 'INSTALL | Include tasks about init.d script fix'
+  include: "{{ role_path }}/tasks/fix_init_d_file.yml"
+  tags:
+    - 'role::vsftpd'
+    - 'role::vsftpd::install'
+
+
+- name: 'CONFIG | Ensure configuration directory exists'
   become: True
   file:
     dest: "{{ vsftpd_config_directory_name }}"
     mode: "{{ vsftpd_config_directory_mode }}"
     owner: "{{ vsftpd_config_directory_owner }}"
     group: "{{ vsftpd_config_directory_group }}"
-    state: directory
-  notify: restart vsftpd
+    state: 'directory'
+  notify: 'HANDLER | Restart vsftpd'
   tags:
-    - config
-    - vsftpd
+    - 'role::vsftpd'
+    - 'role::vsftpd::config'
 
-- name: Generate main configuration file
+
+- name: 'CONFIG | Manage main configuration file'
   become: True
   template:
     src: "{{ role_path }}/templates/vsftpd.conf.j2"
@@ -42,20 +54,22 @@
     mode: "{{ vsftpd_config_file_mode }}"
     owner: "{{ vsftpd_config_file_owner }}"
     group: "{{ vsftpd_config_file_group }}"
-  notify: restart vsftpd
+  notify: 'HANDLER | Restart vsftpd'
   tags:
-    - config
-    - vsftpd
+    - 'role::vsftpd'
+    - 'role::vsftpd::config'
 
-- name: Include tasks about additional configuration files
+
+- name: 'CONFIG | Include tasks about additional configuration files'
   include: "{{ role_path }}/tasks/create_file_with_content.yml"
   tags:
-    - config
-    - vsftpd
+    - 'role::vsftpd'
+    - 'role::vsftpd::config'
 
-- name: Include tasks about virtual users
+
+- name: 'CONFIG | Include tasks about virtual users'
   include: "{{ role_path }}/tasks/manage_virtual_users.yml"
-  when: vsftpd_virtual_users_with_berkeleydb
+  when: "vsftpd_virtual_users_with_berkeleydb | bool"
   tags:
-    - config
-    - vsftpd
+    - 'role::vsftpd'
+    - 'role::vsftpd::config'

@@ -1,35 +1,39 @@
 ---
 
 # Manage virtual users with BerkeleyDB
-- name: Clean users database
+- name: 'CONFIG | USERS | Clean users database'
   become: True
   file:
     path: "{{ vsftpd_virtual_users_database_file_name }}"
-    state: absent
-  when: vsftpd_virtual_users_clean_database
+    state: 'absent'
+  when: "vsftpd_virtual_users_clean_database"
 
-- name: Generate user list
+
+- name: 'CONFIG | USERS | Generate user list'
   become: True
   template:
-    src: templates/user_tmp_list.j2
-    dest: /root/vsftpd_user_list_tmp.txt
-    owner: root
-    group: root
+    src: "{{ role_path }}/templates/user_tmp_list.j2"
+    dest: '/root/vsftpd_user_list_tmp.txt'
+    owner: 'root'
+    group: 'root'
     mode: '0400'
 
-- name: Create or update database
+
+- name: 'CONFIG | USERS | Create or update database'
   become: True
   shell: "db5.3_load -T -t hash \
             -f /root/vsftpd_user_list_tmp.txt \
             {{ vsftpd_virtual_users_database_file_name }}.db"
   changed_when: False
 
-- name: Delete temp user list
-  file:
-    path: /root/vsftpd_user_list_tmp.txt
-    state: absent
 
-- name: Set database permissions
+- name: 'CONFIG | USERS | Delete temp user list'
+  file:
+    path: '/root/vsftpd_user_list_tmp.txt'
+    state: 'absent'
+
+
+- name: 'CONFIG | USERS | Set database permissions'
   become: True
   file:
     path: "{{ vsftpd_virtual_users_database_file_name }}.db"
@@ -37,7 +41,8 @@
     group: "{{ vsftpd_virtual_users_database_file_group }}"
     mode: "{{ vsftpd_virtual_users_database_file_mode }}"
 
-- name: Create directory structure
+
+- name: 'CONFIG | USERS | Create directory structure'
   become: True
   file:
     path: "{{ vsftpd_virtual_user_root_directory
@@ -45,9 +50,8 @@
     owner: "{{ item.1.owner }}"
     group: "{{ item.1.group }}"
     mode: "{{ item.1.mode }}"
-    state: directory
+    state: 'directory'
   no_log: True
   with_nested:
     - "{{ vsftpd_virtual_users }}"
     - "{{ vsftpd_virtual_user_directories }}"
-
