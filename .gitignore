@@ -1,9 +1,24 @@
-# Vagrant files
-.vagrant
+# Ansible
+*.retry
+roles/
+tests/roles/
 
-# swap files
+# Swap files
+*.swo
 *.swp
 
-# python
+# Python bytecode
 *.pyc
+
+# Pytest
 .cache
+
+# Tox
+.tox
+
+# Vagrant
+.vagrant
+*.log
+
+# Molecule
+.molecule

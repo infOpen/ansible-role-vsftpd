@@ -1,10 +1,9 @@
 ---
 
 # Tasks about configuration checks
-- name: Check listen(_ipv6) keys because they are mutually exclusive
+- name: 'CONFIG | Check listen(_ipv6) keys because they are mutually exclusive'
   fail:
     msg: 'Listen and listen_ipv6 are mutually exclusive'
   when:
-    - vsftpd_listen
-    - vsftpd_listen_ipv6
-
+    - "vsftpd_main_config.boolean_options.listen"
+    - "vsftpd_main_config.boolean_options.listen_ipv6"

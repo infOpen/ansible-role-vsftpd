@@ -19,7 +19,7 @@ def vsftpd_octal_mode_validate(arg):
     """
 
     RE = re.compile('^\s*(?P<octal_mode>0[0-7]{3})\s*$')
-    VALID_TYPES = [ str, int, AnsibleUnicode ]
+    VALID_TYPES = [ str, int, AnsibleUnicode, unicode ]
 
     arg_type = type(arg)
     data = str(arg)
@@ -51,4 +51,3 @@ class FilterModule(object):
     }
     def filters(self):
         return self.filter_map
-
