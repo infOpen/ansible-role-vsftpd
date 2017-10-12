@@ -2,4 +2,4 @@ molecule==2.2.1
 pytest==3.2.3
 python-vagrant==0.5.15
 testinfra==1.8.0
-tox==2.8.2
+tox==2.9.1
