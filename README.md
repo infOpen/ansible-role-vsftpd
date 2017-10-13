@@ -1,6 +1,10 @@
 # vsftpd
 
-[![Build Status](https://travis-ci.org/infOpen/ansible-role-vsftpd.svg?branch=master)](https://travis-ci.org/infOpen/ansible-role-vsftpd)
+[![Build Status](https://img.shields.io/travis/infOpen/ansible-role-vsftpd/master.svg?label=travis_master)](https://travis-ci.org/infOpen/ansible-role-vsftpd)
+[![Build Status](https://img.shields.io/travis/infOpen/ansible-role-vsftpd/develop.svg?label=travis_develop)](https://travis-ci.org/infOpen/ansible-role-vsftpd)
+[![Updates](https://pyup.io/repos/github/infOpen/ansible-role-vsftpd/shield.svg)](https://pyup.io/repos/github/infOpen/ansible-role-vsftpd/)
+[![Python 3](https://pyup.io/repos/github/infOpen/ansible-role-vsftpd/python-3-shield.svg)](https://pyup.io/repos/github/infOpen/ansible-role-vsftpd/)
+[![Ansible Role](https://img.shields.io/ansible/role/7941.svg)](https://galaxy.ansible.com/infOpen/vsftpd/)
 
 Install vsftpd package.
 
