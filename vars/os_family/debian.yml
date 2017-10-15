@@ -1,6 +1,6 @@
 ---
 
-# Debian Jessie specific variables
+# Debian OS family specific variables
 
 _vsftpd_packages:
   - 'vsftpd'
