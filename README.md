@@ -197,8 +197,8 @@ vsftpd_paths:
       path: '/etc/init.d/vsftpd'
     main_config:
       path: '/etc/vsftpd.conf'
-    pam_configuration: {}
-    path: '/etc/pam.d/vsftpd'
+    pam_configuration:
+      path: '/etc/pam.d/vsftpd'
     message:
       path: '.message'
     rsa_cert:
