@@ -1,7 +1,11 @@
 import re
 from ansible import errors
 from ansible.parsing.yaml.objects import AnsibleUnicode
-
+try:
+    from ansible.utils.unsafe_proxy import AnsibleUnsafeText
+    is_bellow_ansible_24 = False
+except ImportError:
+    is_bellow_ansible_24 = True
 
 #
 # Additionnal Jinja2 filter to validate positive_integer values
@@ -19,7 +23,10 @@ def vsftpd_octal_mode_validate(arg):
     """
 
     RE = re.compile('^\s*(?P<octal_mode>0[0-7]{3})\s*$')
-    VALID_TYPES = [ str, int, AnsibleUnicode, unicode ]
+    if is_bellow_ansible_24:
+        VALID_TYPES = [ str, int, AnsibleUnicode, unicode ]
+    else:
+        VALID_TYPES = [ str, int, AnsibleUnicode, AnsibleUnsafeText, unicode ]
 
     arg_type = type(arg)
     data = str(arg)
