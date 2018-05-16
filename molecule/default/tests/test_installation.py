@@ -62,4 +62,4 @@ def test_user(host):
     ftp_user = host.user('ftp')
 
     assert ftp_user.exists
-    assert ftp_user.shell == '/bin/false'
+    assert ftp_user.shell in ['/usr/sbin/nologin', '/bin/false']
